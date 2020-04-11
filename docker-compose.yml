@@ -1,0 +1,62 @@
+version: "2"
+
+services:
+    auctioneer:
+        image: auctioneer:1.0.0
+        ports:
+            - "3000:3000"
+        network_mode: host
+    
+    bidder1:
+        image: bidder:1.0.0
+        ports:
+            - "5001:5001"
+        environment:
+            AUCTIONEER_URL: "http://localhost:3000/bidder"
+            BIND_PORT: "5001"
+            BID_DELAY: "180"
+        network_mode: host
+        depends_on:
+            - auctioneer
+    
+
+    bidder2:
+        image: bidder:1.0.0
+        ports:
+            - "5002:5002"
+        environment:
+            AUCTIONEER_URL: "http://localhost:3000/bidder"
+            BIND_PORT: "5002"
+            BID_DELAY: "40"
+        network_mode: host
+        depends_on:
+            - auctioneer
+
+    bidder3:
+        image: bidder:1.0.0
+        ports:
+            - "5003:5003"
+        environment:
+            AUCTIONEER_URL: "http://localhost:3000/bidder"
+            BIND_PORT: "5003"
+            BID_DELAY: "50"
+        network_mode: host
+        depends_on:
+            - auctioneer
+
+    bidder4:
+        image: bidder:1.0.0
+        ports:
+            - "5004:5004"
+        environment:
+            AUCTIONEER_URL: "http://localhost:3000/bidder"
+            BIND_PORT: "5004"
+            BID_DELAY: "220"
+        network_mode: host
+        depends_on:
+            - auctioneer
+
+# networks:
+#     network: 
+#         external: 
+#           name: auction

@@ -1,0 +1,94 @@
+swagger: '2.0'
+info:
+  title: Auctioneer Service API.
+  description:
+    Auctioneer service APIs with body, methods and routes
+  version: 2.0.0
+schemes:
+  - http
+produces:
+  - application/json
+paths:
+  /auction:
+    post:
+      summary: Auction Details
+      description: >-
+        Start an auction and let all the bidders bid within certain time.
+      parameters:
+        - name: auction_id
+          in: body
+          required: true
+          schema:
+              $ref: '#/definitions/auction'
+      tags:
+        - provisioning
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/winner'
+        400:
+          description: Bad Request
+        404:
+          description: No bidder or bids available or no response received before certain expected time.
+        500:
+          description: Internal Server Error
+  
+  /bidder:
+    post:
+      summary: Register a bidder
+      description: >-
+        Register a bidder detail like port running on and bidder id.
+      parameters:
+        - name: Bidder Details
+          in: body
+          required: true
+          schema:
+              $ref: '#/definitions/bidder'
+      tags:
+        - provisioning
+      responses:
+        200:
+          description: Bidder registered
+          schema:
+            $ref: '#/definitions/winner'
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+
+definitions:
+  auction:
+    type: object
+    required:
+      - auction_id
+    properties:
+      auction_id:
+        description: a unique auction_id
+        type: string
+
+  winner:
+    type: object
+    required:
+      - bidder_id
+      - bid_value
+    properties:
+      bidder_id:
+        description: a unique identifier of bidder
+        type: string
+      bid_value:
+        description: maximum bidding amount
+        type: number
+        
+  bidder:
+    type: object
+    required:
+      - bidder_id
+      - bidder_port
+    properties:
+      bidder_id:
+        description: a unique identifier of bidder
+        type: string
+      bidder_port:
+        description: port where the bidder is running on
+        type: string
